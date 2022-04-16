@@ -72,6 +72,7 @@ def parse_read_id (header_line, paired_end_flag):
 #
 def get_skip_ids (readsfile, skip_len, paired_end_flag):
     these_skip_ids = dict()
+    print ("reading input file {} ...".format(readsfile))
     if readsfile.lower().endswith('.gz'):
         f = gzip.open(readsfile, 'rt')
     else:
@@ -95,6 +96,7 @@ def get_skip_ids (readsfile, skip_len, paired_end_flag):
             this_id = None
         counter += 1
     print ("IDs read {}".format(read_cnt))
+    print ("DONE")
     f.close()
 
     return these_skip_ids
@@ -128,6 +130,7 @@ def write_filtered_output (skip_ids=None,
             this_outputfile += ".gz"
 
     # open this_outputfile
+    print ("writing output file {} ...".format(this_outputfile))
     if gzip_output:
         out = gzip.open(this_outputfile, 'wt')
     else:
@@ -164,6 +167,7 @@ def write_filtered_output (skip_ids=None,
     if not skip_read:  # one more
         out.write("\n".join(read_buf)+"\n")
     print ("READs processed {}".format(read_cnt))
+    print ("DONE")
     f.close()
     out.close()
 
@@ -190,11 +194,9 @@ def main() -> int:
     args = getargs()
 
     # get skip ids (note: also skips forward read if reverse short, and vice versa)
-    print ("Reading IDs ...")
     skip_ids = get_skip_ids (args.forwardreads, args.length, args.pairedend)
     if args.pairedend and not args.interleaved:
         skip_ids = merge_skip_ids (skip_ids, get_skip_ids (args.reversereads, args.length, args.pairedend))
-    print ("DONE")
         
     if not skip_ids:
         print ("no reads less than {} found.  No reads to filter and not creating output".format(args.length))
@@ -205,24 +207,20 @@ def main() -> int:
         read_direction = None
         if args.pairedend and not args.interleaved:
             read_direction = 'R1'
-        print ("writing output ...")
         this_outputfile = write_filtered_output (skip_ids=skip_ids,
                                                  outputfile=args.outputfile,
                                                  readsfile=args.forwardreads,
                                                  paired_end_flag=args.pairedend,
                                                  read_direction=read_direction)
-        print ("DONE")
 
         # write filtered reverse output
         read_direction = 'R2'
         if args.pairedend and args.reversereads:
-            print ("writing reverse output ...")
             this_outputfile = write_filtered_output (skip_ids=skip_ids,
                                                      outputfile=args.outputfile,
                                                      readsfile=args.reversereads,
                                                      paired_end_flag=args.pairedend,
                                                      read_direction=read_direction)
-            print ("DONE")
                    
     return 0
 
