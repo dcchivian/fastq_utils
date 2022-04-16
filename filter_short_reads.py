@@ -85,11 +85,9 @@ def get_skip_ids (readsfile, skip_len, paired_end_flag):
             counter = 0
         if line.startswith('@') and counter == 0:
             this_id = parse_read_id(line, paired_end_flag)
-            print ("READ_ID: {}".format(this_id))  # DEBUG
         elif this_id != None:
             if len(line) <= skip_len:
                 these_skip_ids[this_id] = True
-                print ("GOT ONE! len={}".format(len(line)))  # DEBUG
             this_id = None
         counter += 1
     f.close()
