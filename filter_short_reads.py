@@ -19,14 +19,14 @@ import re
 #
 def getargs():
     default_len = 25
-    parser = argparse.ArgumentParser(description="filter out short reads from fastq file(s)")
+    parser = argparse.ArgumentParser(description="filter out short reads from fastq")
     group = parser.add_mutually_exclusive_group()
     group.add_argument("-s", "--singleend", action="store_true", help="single-end library, use only forward reads")
     group.add_argument("-p", "--pairedend", action="store_true", help="paired-end library, use forward and reverse or --interleaved and forward reads")
     parser.add_argument("-i", "--interleaved", action="store_true", help="for paired-end library, use forward reads file only")
-    parser.add_argument("-f", "--forwardreads", help="forward reads library")
-    parser.add_argument("-r", "--reversereads", help="reverse reads library")
-    parser.add_argument("-o", "--outputfile", help="output reads library basename")
+    parser.add_argument("-f", "--forwardreads", help="forward reads library file")
+    parser.add_argument("-r", "--reversereads", help="reverse reads library file")
+    parser.add_argument("-o", "--outputfile", help="output reads library file basename")
     parser.add_argument("-l", "--length", type=int, default=default_len, help="the read length <= to filter (default={})".format(default_len))
     args = parser.parse_args()
 
@@ -89,13 +89,13 @@ def get_skip_ids (readsfile, skip_len, paired_end_flag):
             this_id = parse_read_id(line, paired_end_flag)
             read_cnt += 1
             if read_cnt % 1000000 == 0:
-                print ("READs evaluated {}".format(read_cnt))
+                print ("reads checked {}".format(read_cnt))
         elif this_id != None:
             if len(line) <= skip_len:
                 these_skip_ids[this_id] = True
             this_id = None
         counter += 1
-    print ("READs evaluated {}".format(read_cnt))
+    print ("READS checked {}".format(read_cnt))
     f.close()
 
     return these_skip_ids
@@ -160,12 +160,12 @@ def write_filtered_output (skip_ids=None,
                 skip_read = True
             read_cnt += 1
             if read_cnt % 1000000 == 0:
-                print ("READs processed {}".format(read_cnt))
+                print ("reads processed {}".format(read_cnt))
         read_buf += [line]
         counter += 1
     if not skip_read:  # one more
         out.write("\n".join(read_buf)+"\n")
-    print ("READs processed {}".format(read_cnt))
+    print ("READS processed {}".format(read_cnt))
     f.close()
     out.close()
 
