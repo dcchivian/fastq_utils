@@ -89,7 +89,7 @@ def get_skip_ids (readsfile, skip_len, paired_end_flag):
             this_id = parse_read_id(line, paired_end_flag)
             read_cnt += 1
             if read_cnt % 1000000 == 0:
-                print ("IDs read {}".format(read_cnt))
+                print ("READs evaluated {}".format(read_cnt))
         elif this_id != None:
             if len(line) <= skip_len:
                 these_skip_ids[this_id] = True
