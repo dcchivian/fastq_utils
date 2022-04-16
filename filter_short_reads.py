@@ -96,7 +96,6 @@ def get_skip_ids (readsfile, skip_len, paired_end_flag):
             this_id = None
         counter += 1
     print ("IDs read {}".format(read_cnt))
-    print ("DONE")
     f.close()
 
     return these_skip_ids
@@ -167,7 +166,6 @@ def write_filtered_output (skip_ids=None,
     if not skip_read:  # one more
         out.write("\n".join(read_buf)+"\n")
     print ("READs processed {}".format(read_cnt))
-    print ("DONE")
     f.close()
     out.close()
 
@@ -222,6 +220,7 @@ def main() -> int:
                                                      paired_end_flag=args.pairedend,
                                                      read_direction=read_direction)
                    
+    print ("DONE")
     return 0
 
 
