@@ -158,12 +158,12 @@ def write_filtered_output (skip_ids=None,
                 skip_read = True
             read_cnt += 1
             if read_cnt % 1000000 == 0:
-                print ("READs read {}".format(read_cnt))
+                print ("READs processed {}".format(read_cnt))
         read_buf += [line]
         counter += 1
     if not skip_read:  # one more
         out.write("\n".join(read_buf)+"\n")
-    print ("READs read {}".format(read_cnt))
+    print ("READs processed {}".format(read_cnt))
     f.close()
     out.close()
 
