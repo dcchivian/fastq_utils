@@ -95,7 +95,7 @@ def get_skip_ids (readsfile, skip_len, paired_end_flag):
                 these_skip_ids[this_id] = True
             this_id = None
         counter += 1
-    print ("IDs read {}".format(read_cnt))
+    print ("READs evaluated {}".format(read_cnt))
     f.close()
 
     return these_skip_ids
