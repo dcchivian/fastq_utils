@@ -190,14 +190,17 @@ def main() -> int:
     args = getargs()
 
     # get skip ids (note: also skips forward read if reverse short, and vice versa)
-    print ("Reading IDs")
+    print ("Reading IDs ...")
     skip_ids = get_skip_ids (args.forwardreads, args.length, args.pairedend)
     if args.pairedend and not args.interleaved:
         skip_ids = merge_skip_ids (skip_ids, get_skip_ids (args.reversereads, args.length, args.pairedend))
-
+    print ("DONE")
+        
     if not skip_ids:
         print ("no reads less than {} found.  No reads to filter and not creating output".format(args.length))
     else:
+        print ("SKIPPING {} reads".format(len(skip_ids.keys())))
+
         # write filtered forward output
         read_direction = None
         if args.pairedend and not args.interleaved:
